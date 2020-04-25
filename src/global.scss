@@ -24,3 +24,58 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+  font-family: 'vision-bold';
+  src: url('src/assets/fonts/Vision-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'vision-black';
+  src: url('src/assets/fonts/Vision-Black.ttf');
+}
+
+@font-face {
+  font-family: 'vision-heavy';
+  src: url('src/assets/fonts/Vision-Heavy.ttf');
+}
+
+@font-face {
+  font-family: 'vision-heavy-italic';
+  src: url('src/assets/fonts/Vision-HeavyItalic.ttf');
+}
+
+@font-face {
+  font-family: 'vision-italic';
+  src: url('src/assets/fonts/Vision-Italic.ttf');
+}
+
+@font-face {
+  font-family: 'vision-light';
+  src: url('src/assets/fonts/Vision-Light.ttf');
+}
+
+@font-face {
+  font-family: 'vision-light-italic';
+  src: url('src/assets/fonts/Vision-LightItalic.ttf');
+}
+
+@font-face {
+  font-family: 'vision-regular';
+  src: url('src/assets/fonts/Vision-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'vision-thin';
+  src: url('src/assets/fonts/Vision-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'vision-thin-italic';
+  src: url('src/assets/fonts/Vision-ThinItalic.ttf');
+}
+
+* {
+  font-family: 'vision-regular';
+}
+

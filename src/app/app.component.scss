@@ -1,0 +1,60 @@
+//Inputs de email e de pass
+.inputWithStyle {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0%;
+}
+
+.inputIcon {
+  color: #FEAF27;
+  margin-right: 5%;
+}
+
+.logoNoTitleToolbar {
+  width: 10%;
+}
+
+.fieldTitle {
+  font-family: vision-bold;
+  font-size: 19px;
+  margin-left: 7.5%;
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+
+.rulesTitle{
+  font-family: vision-bold;
+  font-size: 16px;
+  margin-left: 7.5%;
+  margin-top: 5%;
+  margin-bottom: 1%;
+}
+
+.rules{
+  margin:0%;
+}
+
+.rulesBackground{
+  --padding-start: 0px;
+  font-size: 14px;
+  margin-left: 7.5%;
+  margin-right: 7.5%;
+  margin-top: 1%;
+
+}
+
+.bottomButton {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  margin-top: 10%;
+  display: block;
+  font-family: "vision-bold";
+  color: white;
+}
+
+.ios ion-item {
+  --padding-start: 0px;
+}

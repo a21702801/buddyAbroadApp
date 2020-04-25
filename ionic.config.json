@@ -1,5 +1,7 @@
 {
   "name": "buddyAbroad",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
