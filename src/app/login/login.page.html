@@ -1,0 +1,41 @@
+<ion-content>
+
+  <ion-img class = logoBuddyAbroad src="assets/logo/Logo2.PNG"></ion-img>
+
+  <form [formGroup]="loginForm">
+    <ion-item class = "inputWithStyle">
+      <ion-input placeholder="example@email.com" type="text" formControlName = "email">
+        <ion-icon name="mail-outline" class="inputIcon"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.email">
+      <ng-container *ngIf ="email.hasError(error.type) && (email.touched || email.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item class = "inputWithStyle">
+      <ion-input placeholder="●●●●●●●●" type="password" formControlName = "password">
+        <ion-icon name="key-outline" class="inputIcon"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.password">
+      <ng-container *ngIf ="password.hasError(error.type) && (password.touched || password.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+  </form>
+
+  <ion-button class="loginButton">Login</ion-button>
+
+  <ion-button fill="clear" class="clearBtn">
+    <ion-label class="blackText">Frogot your password?</ion-label>
+    <ion-label class="yellowText"> Recover pass </ion-label>
+  </ion-button>
+
+  <ion-button fill="clear" type="submit" class="clearBtn" href="/register">
+    <ion-label class="blackText">Don't have an account?</ion-label>
+    <ion-label class="yellowText"> Sign up! </ion-label>
+  </ion-button>
+
+</ion-content>

@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill = "clear" slot="start" href="/">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+      <ion-title>
+        Sign up !
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="registerForm" (ngSubmit)="submit()">
+
+    <ion-text>
+      <h1 class="fieldTitle"> Personal Info </h1>
+    </ion-text>
+
+    <ion-item class = "inputWithStyle">
+      <ion-label position="stacked" color="primary">First Name</ion-label>
+      <ion-input  form type="text" maxlength="25" formControlName = "first_name">
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.first_name">
+      <ng-container *ngIf ="first_name.hasError(error.type) && (first_name.touched || first_name.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item class = "inputWithStyle">
+      <ion-label position="stacked" color="primary">Last Name</ion-label>
+      <ion-input  type="text" maxlength="25" formControlName = "last_name">
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.last_name">
+      <ng-container *ngIf ="last_name.hasError(error.type) && (last_name.touched || last_name.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item  class ="inputWithStyle" >
+      <ion-label color = "primary" position="stacked">Gender</ion-label>
+      <ion-select placeholder="Select your gender" interface = "alert" formControlName = "gender">
+        <ion-select-option value="f">Female</ion-select-option>
+        <ion-select-option value="m">Male</ion-select-option>
+        <ion-select-option value="o">Other</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="inputWithStyle">
+      <ion-label position="stacked" color= "primary">Date of Birth</ion-label>
+      <ion-datetime display-format="DD/MM/YYYY" min="1900-01-01" max="2020-12-31" placeholder="DD/MM/YYYY" formControlName = "date_of_birth"></ion-datetime>
+    </ion-item>
+
+    <ion-text>
+      <h1 class="fieldTitle"> Account Info </h1>
+    </ion-text>
+
+    <ion-item class = "inputWithStyle">
+      <ion-label position="stacked" color = "primary">Email</ion-label>
+      <ion-input  type="email" maxlength="70" formControlName = "email">
+        <ion-icon name="mail-outline" class="inputIcon"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.email">
+      <ng-container *ngIf ="email.hasError(error.type) && (email.touched || email.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item class = "inputWithStyle">
+      <ion-label position="stacked" color = "primary">Password</ion-label>
+      <ion-input type="password" maxlength="25" formControlName = "password">
+        <ion-icon name="key-outline" class="inputIcon"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.password">
+      <ng-container *ngIf ="password.hasError(error.type) && (password.touched || password.dirty) " color ="primary">
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-item class = "inputWithStyle">
+      <ion-label position="stacked" color = "primary">Confirm Password</ion-label>
+      <ion-input  type="password" maxlength="25" formControlName = "confirm_password" >
+        <ion-icon name="key-outline" class="inputIcon"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <div *ngFor="let error of errorMessages.confirm_password">
+      <ng-container *ngIf ="confirm_password.hasError(error.type) && (confirm_password.touched || confirm_password.dirty) " color ="primary" >
+        <small class="error-message"> {{error.message}}</small>
+      </ng-container>
+      <span *ngIf ="registerForm.errors?.misMatch && (confirm_password.touched || confirm_password.dirty) " color ="primary">
+          <br>
+          <small class="error-message">Passwords do not match </small>
+      </span>
+    </div>
+
+    <ion-button class="bottomButton" type="submit" [disabled]="!registerForm.valid">Sign me up!</ion-button>
+  </form>
+</ion-content>

@@ -1,0 +1,63 @@
+//Logo
+.logoBuddyAbroad {
+  display: block;
+  margin: 20% auto;
+  width: 50%;
+}
+
+//Inputs de email e de pass
+.inputWithStyle {
+  --background: #F5F6FA;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+}
+
+.inputIcon {
+  color: #FEAF27;
+  margin-right: 5%;
+  margin-left:5%
+}
+
+//Login btn
+.loginButton {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  display: block;
+  font-family: "vision-bold";
+  color: white;
+}
+
+//Signup btn
+.clearBtn {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.blackText {
+  color: #000000;
+  opacity: 55%;
+  font-family: "vision-bold";
+  font-size: 75%;
+}
+
+.yellowText {
+  font-family: "vision-bold";
+  font-size: 75%;
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 12px ;
+  margin-left: 4.5vh;
+}
+
+.ios ion-item {
+  --padding-start: 0px;
+}
+
