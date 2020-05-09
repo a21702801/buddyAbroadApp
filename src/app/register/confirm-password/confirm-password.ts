@@ -6,7 +6,3 @@ export function ConfirmPassword(control: AbstractControl): {[key: string]: any} 
 
     return password && cPassword && password.value !== cPassword.value ? { misMatch: true } : null;
 }
-
-export function setConfirmPassword(input, color) {
-    input = color;
-};
