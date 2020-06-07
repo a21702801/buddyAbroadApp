@@ -11,7 +11,10 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
+import {NativeGeocoderOptions} from '@ionic-native/native-geocoder';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +23,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+      GoogleMaps,
+      Geolocation,
+      NativeGeocoder,
   ],
   bootstrap: [AppComponent]
 })

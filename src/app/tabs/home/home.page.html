@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="primary">
+      <ion-button color="secondary">
+        <ion-icon size="default" color="medium" name="chatbubbles"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="toolbar-title">
+      <!--<ion-icon size="default" color="dark" name="pin"></ion-icon>-->
+      {{country}}
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  {{error}}
+
+  <!--Title-->
+  <ion-text>
+    <h1 class="fieldTitle"> Best Rated </h1>
+  </ion-text>
+
+  <!--Top 3 visits-->
+
+  <span *ngIf="bestRatedVisits.length > 0">
+    <ion-card *ngFor="let card of bestRatedVisits">
+      <ion-img src="{{card.img}}"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle class="card-sub-title">{{card.firstName}} {{card.lastName}}</ion-card-subtitle>
+        <ion-card-title class="card-title">{{card.title}}</ion-card-title>
+      </ion-card-header>
+
+        <ion-grid>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="success">
+                <ion-icon size="small" name="pricetag-outline"></ion-icon>
+                <ion-label>{{card.pricePerson}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="primary">
+                <ion-icon size="small" name="star-outline"></ion-icon>
+                <ion-label>{{card.rating}}/5</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="secondary">
+                <ion-icon size="small" name="time-outline"></ion-icon>
+                <ion-label>{{card.duration.slice(1,5)}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="tertiary">
+                <ion-icon size="small" name="people-outline"></ion-icon>
+                <ion-label>{{card.minGroupSize}}-{{card.maxGroupSize}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+    </ion-card>
+  </span>
+
+  <ion-text>
+    <h1 class="fieldTitle"> Visits Nearby </h1>
+  </ion-text>
+
+  <span *ngIf="visitsNearby.length > 0">
+    <ion-card *ngFor="let card of visitsNearby">
+      <ion-img src="{{card.img}}"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle class="card-sub-title">{{card.firstName}} {{card.lastName}}</ion-card-subtitle>
+        <ion-card-title class="card-title">{{card.title}}</ion-card-title>
+      </ion-card-header>
+
+        <ion-grid>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="success">
+                <ion-icon size="small" name="pricetag-outline"></ion-icon>
+                <ion-label>{{card.pricePerson}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="primary">
+                <ion-icon size="small" name="star-outline"></ion-icon>
+                <ion-label>{{card.rating}}/5</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="secondary">
+                <ion-icon size="small" name="time-outline"></ion-icon>
+                <ion-label>{{card.duration.slice(1,5)}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="tertiary">
+                <ion-icon size="small" name="people-outline"></ion-icon>
+                <ion-label>{{card.minGroupSize}}-{{card.maxGroupSize}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+    </ion-card>
+
+  </span>
+
+
+
+
+</ion-content>
+

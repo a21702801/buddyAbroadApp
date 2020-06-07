@@ -1,0 +1,266 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Search</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-segment (ionChange)="changeViewMode($event)" value="0">
+      <ion-segment-button value="0">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        <ion-icon name="albums-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--Searchbar-->
+  <span *ngIf="viewMode != 2">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="10">
+          <ion-searchbar class="searchbar-custom" placeholder="Type a title here ..." (ionChange)="handleInput()" [(ngModel)]="queryText"></ion-searchbar>
+        </ion-col>
+        <ion-col size="2" style="padding-top: 1rem">
+          <div class="order-button">
+            <ion-icon color="medium" class="selected-icon" name="swap-vertical-outline"></ion-icon>
+            <ion-select class="custom-select" value="brown" okText="Okay" cancelText="Dismiss" class="select-position" interface="popover" value="n">
+              <ion-select-option value="ar">Ascending Rating</ion-select-option>
+              <ion-select-option value="dr">Descending Rating</ion-select-option>
+              <ion-select-option value="n">None</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </span>
+
+  <ion-text>
+    <p>
+      {{queryText}}
+    </p>
+  </ion-text>
+
+  <!-- List View -->
+  <ion-list>
+    <span *ngIf="viewMode == 0 && queriedCards.length > 0">
+      <span *ngFor="let card of queriedCards">
+        <ion-item>
+
+          <ion-thumbnail slot="start">
+            <img src='{{card.img}}'>
+          </ion-thumbnail>
+
+          <ion-grid>
+
+            <ion-row>
+              <ion-label class="item-title">{{card.title}}</ion-label>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-chip outline="true" color="success">
+                  <ion-label>{{card.pricePerson}}</ion-label>
+                </ion-chip>
+              </ion-col>
+
+              <ion-col>
+                <ion-chip outline="true" color="secondary">
+                  <ion-label>{{card.duration.slice(1,5)}}/h</ion-label>
+                </ion-chip>
+              </ion-col>
+
+              <ion-col>
+                <ion-chip outline="true" color="warning">
+                  <ion-label>{{card.rating}}/5</ion-label>
+                </ion-chip>
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+        </ion-item>
+      </span>
+    </span>
+
+
+
+    <!-- Card View -->
+    <span *ngIf="viewMode == 1 && queriedCards.length > 0 ">
+      <ion-card *ngFor="let card of queriedCards">
+        <ion-img src="{{card.img}}"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle class="card-sub-title">{{card.firstName}} {{card.lastName}}</ion-card-subtitle>
+        <ion-card-title class="card-title">{{card.title}}</ion-card-title>
+      </ion-card-header>
+
+        <ion-grid>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="success">
+                <ion-icon size="small" name="pricetag-outline"></ion-icon>
+                <ion-label>{{card.pricePerson}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="primary">
+                <ion-icon size="small" name="star-outline"></ion-icon>
+                <ion-label>{{card.rating}}/5</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+              <ion-chip outline="true" color="secondary">
+                <ion-icon size="small" name="time-outline"></ion-icon>
+                <ion-label>{{card.duration.slice(1,5)}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+            <ion-col>
+              <ion-chip outline="true" color="tertiary">
+                <ion-icon size="small" name="people-outline"></ion-icon>
+                <ion-label>{{card.minGroupSize}}-{{card.maxGroupSize}}</ion-label>
+              </ion-chip>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+      </ion-card>
+    </span>
+  </ion-list>
+
+  <!-- Infinite Scroll -->
+  <span *ngIf="viewMode != 2">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </span>
+
+  <!-- Filter -->
+  <span *ngIf="viewMode == 2">
+
+    <form></form>
+    <!-- Price range -->
+    <ion-item lines="full">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text>
+              <h1 class="field-title">Price range (€): {{priceRange.lower}} - {{priceRange.upper}}</h1>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-range [(ngModel)]="priceRange" style="font-family: 'Gotham Medium'" dualKnobs="true" min="0" max="30" step="5" snaps="true" pin = "true">
+            <ion-label slot="start" class="start-label">0</ion-label>
+            <ion-label slot="end" class="end-label">30 +</ion-label>
+          </ion-range>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Rating range -->
+    <ion-item lines="full">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text>
+              <h1 class="field-title">Rating Range: {{ratingRange.lower}} - {{ratingRange.upper}}</h1>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-range [(ngModel)]="ratingRange" style="font-family: 'Gotham Medium'" dualKnobs="true" min="0" max="5" step="1" snaps="true" pin = "true">
+            <ion-label slot="start" class="start-label">0</ion-label>
+            <ion-label slot="end" class="end-label">5</ion-label>
+          </ion-range>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Duration range -->
+    <ion-item lines="full">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text>
+              <h1 class="field-title">Max Duration</h1>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+          <ion-item>
+            <ion-datetime [(ngModel)]="maxDuration" style="font-family: 'Gotham Book'" displayFormat="HH:mm" min="00:00" max="08:00"></ion-datetime>
+          </ion-item>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Group range -->
+    <ion-item lines="full">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text>
+              <h1 class="field-title">Group Size: {{groupRange.lower}} - {{groupRange.upper}}</h1>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-range [(ngModel)]="groupRange" style="font-family: 'Gotham Medium'" dualKnobs="true" min="0" max="10" step="1" snaps="true" pin = "true">
+            <ion-label slot="start" class="start-label">0</ion-label>
+            <ion-label slot="end" class="end-label">10</ion-label>
+          </ion-range>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <!-- Distance range -->
+    <ion-item lines="full">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text>
+              <h1 class="field-title">Distance (Km): {{distance}}</h1>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-range [(ngModel)]="distance" style="font-family: 'Gotham Medium'" min="1" max="160" step="1" pin="true">
+            <ion-label slot="start" class="start-label">1</ion-label>
+            <ion-label slot="end" class="end-label">160 +</ion-label>
+          </ion-range>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+  <ion-button class="search-button" (click)="sendSearchRequest(
+        this.id,
+        this.country,
+        this.priceRange.lower,
+        this.priceRange.upper,
+        this.ratingRange.lower,
+        this.ratingRange.upper,
+        this.maxDuration,
+        this.groupRange.lower,
+        this.groupRange.upper,
+        this.distance,
+        this.latitude,
+        this.longitude,
+        'K')"> Search </ion-button>
+
+  </span>
+
+</ion-content>

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {ConfirmPassword} from '../register/confirm-password/confirm-password';
+import { RestService } from '../../services/rest-service/rest.service';
+import { ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,7 @@ import {ConfirmPassword} from '../register/confirm-password/confirm-password';
 export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
+  public loginResponse;
 
     public errorMessages = {
         email: [
@@ -22,7 +25,15 @@ export class LoginPage implements OnInit {
         ],
     };
 
-  constructor(private httpClient: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(
+      private httpClient: HttpClient,
+      private formBuilder: FormBuilder,
+      private restService: RestService,
+      // private storage: Storage,
+      private route: ActivatedRoute,
+      private router: Router,
+      public toastController: ToastController
+  ) { }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -50,6 +61,36 @@ export class LoginPage implements OnInit {
 
     get password() {
         return this.loginForm.get('password');
+    }
+
+    async submit() {
+        console.log(this.loginForm.value);
+        this.restService.postForm(this.loginForm.value, this.restService.AUTH_ADRESS, '/login').subscribe(
+            async res => {
+                this.loginResponse = res;
+                console.log('No Error');
+                console.log(this.loginResponse);
+                /*await this.storage.set('email', this.loginResponse.email);
+                await this.storage.set('access_token', this.loginResponse.accessToken);
+                await this.storage.set('refresh_token', this.loginResponse.refreshToken);*/
+                await this.router.navigate(['./tabs'], { relativeTo: this.route});
+                // this.presentToast(this.loginMessage.info, 'success');
+            },
+            error => {
+                console.log('Error');
+                this.loginResponse = error.error;
+                console.log(error);
+                // this.presentToast(this.loginMessage, 'danger');
+            });
+    }
+
+    async presentToast( registerMessage, color ) {
+        const toast = await this.toastController.create({
+            message: registerMessage,
+            duration: 2000,
+            color
+        });
+        toast.present();
     }
 
 }

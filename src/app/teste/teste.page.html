@@ -5,55 +5,8 @@
 </ion-header>
 
 <ion-content>
+  <ion-button (click)="teste()"> teste</ion-button>
 
-  <form [formGroup]="testeForm">
-
-    <ion-item class = "inputWithStyle">
-      <ion-label position="stacked" color="primary">First Name</ion-label>
-      <ion-input  form type="text" formControlName = "first_name">
-      </ion-input>
-    </ion-item>
-    <div *ngFor="let error of errorMessages.first_name">
-      <ng-container *ngIf ="first_name.hasError(error.type) && (first_name.touched || first_name.dirty) " color ="primary">
-        <small class="error-message"> {{error.message}}</small>
-      </ng-container>
-    </div>
-
-    <ion-item class = "inputWithStyle">
-      <ion-label position="stacked" color="primary">email</ion-label>
-      <ion-input  form inputmode ="email" type="text" formControlName = "email">
-      </ion-input>
-    </ion-item>
-    <div *ngFor="let error of errorMessages.email">
-      <ng-container *ngIf ="email.hasError(error.type) && (email.touched || email.dirty) " color ="primary">
-        <small class="error-message"> {{error.message}}</small>
-      </ng-container>
-    </div>
-
-    <ion-item class = "inputWithStyle">
-      <ion-label position="stacked" color="primary">password</ion-label>
-      <ion-input  form inputmode ="password" type="text" formControlName = "password">
-      </ion-input>
-    </ion-item>
-    <div *ngFor="let error of errorMessages.password">
-      <ng-container *ngIf ="password.hasError(error.type) && (password.touched || password.dirty) " color ="primary">
-        <small class="error-message"> {{error.message}}</small>
-      </ng-container>
-    </div>
-
-    <ion-item class = "inputWithStyle">
-      <ion-label position="stacked" color="primary">confirm password</ion-label>
-      <ion-input  form  type="text" formControlName = "confirm_passsword">
-      </ion-input>
-    </ion-item>
-    <div *ngFor="let error of errorMessages.password">
-      <ng-container *ngIf ="confirm_password.hasError( 'mismatchedPasswords') ||  (confirm_password.touched || confirm_password.dirty) " color ="primary">
-        <small class="error-message"> {{error.message}}</small>
-      </ng-container>
-    </div>
-
-  <ion-button class="bottomButton" type="submit" [disabled]="!testeForm.valid" onclick="ping()">Sign me up!</ion-button>
-  </form>
 </ion-content>
 
 

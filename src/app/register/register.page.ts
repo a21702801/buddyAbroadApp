@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ConfirmPassword } from './confirm-password/confirm-password';
-import { AuthService } from '../../services/auth/auth.service';
+import { RestService } from '../../services/rest-service/rest.service';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -48,8 +48,12 @@ export class RegisterPage implements OnInit {
         ]
     };
 
-    constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private authService: AuthService,
-                public toastController: ToastController) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private httpClient: HttpClient,
+        private restService: RestService,
+        public toastController: ToastController
+    ) {}
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -125,7 +129,7 @@ export class RegisterPage implements OnInit {
 
     async submit() {
         console.log(this.registerForm.value);
-        this.authService.register(this.registerForm.value).subscribe(
+        this.restService.postForm(this.registerForm.value, this.restService.AUTH_ADRESS, '/register').subscribe(
                 res => {
                     this.registerMessage = res;
                     console.log(res);

@@ -1,0 +1,38 @@
+.message-icon {
+  --background: #A5ADB7 !important;
+}
+
+.toolbar-title {
+  font-family: "Gotham Book";
+  color: #333333;
+}
+
+.fieldTitle {
+  font-family: "Gotham Medium";
+  font-size: 1.5rem;
+  margin-left: 7%;
+  margin-top: 10%;
+  margin-bottom: 5%;
+  color: #333333;
+}
+
+.card-title {
+  font-family: "Gotham Bold";
+  font-size: 1rem;
+}
+
+.card-sub-title {
+  font-family: "Gotham Book";
+  font-size: 0.8rem;
+}
+
+.example-seven{
+  background: #BADA55;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}
+
+ion-chip {
+  pointer-events: none;
+}
