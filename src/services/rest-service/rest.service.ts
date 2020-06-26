@@ -40,8 +40,13 @@ export class RestService {
         return this.httpClient.post<JSON>(adress + action, request).pipe(catchError(this.errorHandler));
     }
 
+    get() {
+        return this.httpClient.get(this.SERVER_ADRESS).pipe(catchError(this.errorHandler));
+    }
+
     errorHandler(error: HttpErrorResponse) {
         return throwError(error);
     }
+
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RestService } from '../../services/rest-service/rest.service';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
       private httpClient: HttpClient,
       private formBuilder: FormBuilder,
       private restService: RestService,
-      // private storage: Storage,
+      private storage: Storage,
       private route: ActivatedRoute,
       private router: Router,
       public toastController: ToastController
@@ -63,27 +63,6 @@ export class LoginPage implements OnInit {
         return this.loginForm.get('password');
     }
 
-    async submit() {
-        console.log(this.loginForm.value);
-        this.restService.postForm(this.loginForm.value, this.restService.AUTH_ADRESS, '/login').subscribe(
-            async res => {
-                this.loginResponse = res;
-                console.log('No Error');
-                console.log(this.loginResponse);
-                /*await this.storage.set('email', this.loginResponse.email);
-                await this.storage.set('access_token', this.loginResponse.accessToken);
-                await this.storage.set('refresh_token', this.loginResponse.refreshToken);*/
-                await this.router.navigate(['./tabs'], { relativeTo: this.route});
-                // this.presentToast(this.loginMessage.info, 'success');
-            },
-            error => {
-                console.log('Error');
-                this.loginResponse = error.error;
-                console.log(error);
-                // this.presentToast(this.loginMessage, 'danger');
-            });
-    }
-
     async presentToast( registerMessage, color ) {
         const toast = await this.toastController.create({
             message: registerMessage,
@@ -93,4 +72,23 @@ export class LoginPage implements OnInit {
         toast.present();
     }
 
+    async submit() {
+        console.log(this.loginForm.value);
+        this.restService.postForm(this.loginForm.value, this.restService.AUTH_ADRESS, '/login').subscribe(
+            async res => {
+                this.loginResponse = res;
+                const authTokens = { access_token: this.loginResponse.accessToken, refresh_token: this.loginResponse.refreshToken };
+                await this.storage.set('email', this.loginResponse.email);
+                await this.storage.set('auth_tokens', authTokens);
+                await this.router.navigate(['/tabs'], { relativeTo: this.route});
+                // await this.router.navigate(['/teste'], { relativeTo: this.route});
+                // this.presentToast(this.loginMessage.info, 'success');
+            },
+            error => {
+                console.log('Error');
+                this.loginResponse = error.error;
+                console.log(error);
+                this.presentToast(this.loginResponse, 'danger');
+            });
+    }
 }

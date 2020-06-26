@@ -5,6 +5,7 @@
     </ion-button>
       <ion-title>
         Sign up !
+        <ion-spinner slot="right" name="dots"></ion-spinner>
       </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -50,7 +51,6 @@
 
     <ion-item class="inputWithStyle">
       <ion-label position="stacked" color= "primary">Date of Birth</ion-label>
-      <ion-label>HH:mm</ion-label>
       <ion-datetime display-format="DD/MM/YYYY" min="1900-01-01" max="2020-12-31" placeholder="DD/MM/YYYY" formControlName = "date_of_birth"></ion-datetime>
     </ion-item>
 

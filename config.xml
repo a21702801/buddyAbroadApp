@@ -4,14 +4,18 @@
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
+    <access origin="*" subdomains="true" />
+    <access origin="http://maps.google.com" />
+    <allow-intent href="http://*/*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="http://192.168.1.71:3000/*/*" />
+    <allow-navigation href="http://localhost:3000/*/*" />
+    <allow-navigation href="http://*/*/*" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />

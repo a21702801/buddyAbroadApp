@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { RestService } from '../../services/rest-service/rest.service';
-import {AccessToken, IAccessToken} from './testeInterface';
+import { Storage } from '@ionic/storage';
+import { JwtHandlerService } from '../../services/jwt-handler/jwt-handler.service';
 
 @Component({
   selector: 'app-teste',
@@ -10,28 +9,37 @@ import {AccessToken, IAccessToken} from './testeInterface';
   styleUrls: ['./teste.page.scss'],
 })
 export class TestePage implements OnInit {
+    public a;
+    public b;
+    public r;
+    public c;
 
-  constructor(
-      private httpClient: HttpClient,
-      private authService: RestService,
-  ) { }
+    constructor( private restService: RestService, private storage: Storage, private jwtHandlerService: JwtHandlerService) {
+        this.loadTokens();
+    }
 
   ngOnInit() {
-
   }
 
-  teste() {
-      // tslint:disable-next-line:max-line-length
-      // let token = new JSON({accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTA1OTU2NjYsImV4cCI6MTU5MDU5NjI2Nn0.GRKdXVwKS-scbUveDApZ_E2OMUOT9joWYISofcS-Q3E'});
-      // tslint:disable-next-line:max-line-length
-      const token: IAccessToken = new AccessToken( 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTA1OTc3MDEsImV4cCI6MTU5MDU5ODMwMX0.v7527QEXZPfsunHqAb6f9KUoSjg0lkB5GC9kbKTIk6Q');
-      this.authService.postToken(token, this.authService.AUTH_ADRESS, '/att').subscribe(
-          res => {
-              console.log('entreiAqui');
-              console.log(res);
-          },
-          error => {
-              console.log(error);
-          });
+  button() {
+        this.restService.get().subscribe( res => {
+            this.r = res;
+            console.log(this.r);
+            this.jwtHandlerService.verifyAuthentication(this.r.info);
+        },
+            error => {
+            console.log(error);
+            });
+  }
+
+  async logout() {
+      await this.storage.remove('access_token');
+      await this.storage.remove('refresh_token');
+      await this.loadTokens();
+  }
+
+  async loadTokens() {
+      await this.storage.get('access_token').then(value => {this.a = value; });
+      await this.storage.get('refresh_token').then(value => {this.b = value; });
   }
 }

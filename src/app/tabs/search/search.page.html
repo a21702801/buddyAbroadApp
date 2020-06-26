@@ -24,14 +24,14 @@
     <ion-grid>
       <ion-row>
         <ion-col size="10">
-          <ion-searchbar class="searchbar-custom" placeholder="Type a title here ..." (ionChange)="handleInput()" [(ngModel)]="queryText"></ion-searchbar>
+          <ion-searchbar class="searchbar-custom" placeholder="Type a title here ..." [(ngModel)]="queryText" (ionChange)="handleInput()" ></ion-searchbar>
         </ion-col>
         <ion-col size="2" style="padding-top: 1rem">
           <div class="order-button">
             <ion-icon color="medium" class="selected-icon" name="swap-vertical-outline"></ion-icon>
-            <ion-select class="custom-select" value="brown" okText="Okay" cancelText="Dismiss" class="select-position" interface="popover" value="n">
-              <ion-select-option value="ar">Ascending Rating</ion-select-option>
-              <ion-select-option value="dr">Descending Rating</ion-select-option>
+            <ion-select [(ngModel)]="sortOption" (ionChange)="sortCards()" class="custom-select" value="brown" okText="Okay" cancelText="Dismiss" class="select-position" interface="popover" value="n">
+              <ion-select-option value="a">Ascending Rating</ion-select-option>
+              <ion-select-option value="d">Descending Rating</ion-select-option>
               <ion-select-option value="n">None</ion-select-option>
             </ion-select>
           </div>
@@ -39,12 +39,6 @@
       </ion-row>
     </ion-grid>
   </span>
-
-  <ion-text>
-    <p>
-      {{queryText}}
-    </p>
-  </ion-text>
 
   <!-- List View -->
   <ion-list>
@@ -143,17 +137,24 @@
   </ion-list>
 
   <!-- Infinite Scroll -->
-  <span *ngIf="viewMode != 2">
+  <span *ngIf="viewMode != 2 && queriedCards.length != 0">
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content loadingSpinner="bubbles">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </span>
 
+  <!-- No cards loaded -->
+  <span *ngIf="queriedCards.length == 0 && (viewMode == 0 || viewMode == 1)" >
+    <ion-text>
+      <p> We couldn't find any visits for your filters </p>
+    </ion-text>
+    <ion-img src="../../assets/images/swing.png"></ion-img>
+  </span>
+
   <!-- Filter -->
   <span *ngIf="viewMode == 2">
 
-    <form></form>
     <!-- Price range -->
     <ion-item lines="full">
       <ion-grid>
@@ -246,21 +247,7 @@
       </ion-grid>
     </ion-item>
 
-  <ion-button class="search-button" (click)="sendSearchRequest(
-        this.id,
-        this.country,
-        this.priceRange.lower,
-        this.priceRange.upper,
-        this.ratingRange.lower,
-        this.ratingRange.upper,
-        this.maxDuration,
-        this.groupRange.lower,
-        this.groupRange.upper,
-        this.distance,
-        this.latitude,
-        this.longitude,
-        'K')"> Search </ion-button>
-
+    <ion-button class="search-button" (click)="loadNewCards()"> Search </ion-button>
   </span>
 
 </ion-content>

@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import {Geolocation, Geoposition} from '@ionic-native/geolocation/ngx';
+import {NativeGeocoder, NativeGeocoderResult} from '@ionic-native/native-geocoder/ngx';
 import { NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { RestService } from '../../../services/rest-service/rest.service';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 import { GetTopVisitsRequest, IGetTopVisitsRequest } from '../../../models/getTopVisitsRequest';
 import { GetVisitsNearby, IGetVisitsNearby } from '../../../models/getVisitsNearbyRequest';
 import { VisitCard, IVisitCard } from '../../../models/visitCard';
+import { JwtHandlerService } from '../../../services/jwt-handler/jwt-handler.service';
 
 @Component({
   selector: 'app-home',
@@ -25,71 +28,70 @@ export class HomePage implements OnInit {
   private lat;
   private lon;
   public error;
+  public loadingCards = true;
 
   constructor(
       private geolocation: Geolocation,
       public nativeGeocoder: NativeGeocoder,
       private restService: RestService,
-      public toastController: ToastController
+      public toastController: ToastController,
+      private router: Router,
+      private storage: Storage,
+      private jwtHandlerService: JwtHandlerService
   ) { }
 
   ngOnInit() {
-
-      // this.getCoordsInfo();
-      this.getTopVisitCards('Portugal', 3 );
-      this.getVisitsNearby(38.762396, -9.282215);
-
-      /*Native lines */
-      // this.getTopVisitCards(this.country, 3 );
-      // this.getVisitsNearby(this.lat, this.long);
+      this.loadHomePage();
   }
 
-  getCoordsInfo() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-
+  async loadHomePage() {
+    await this.geolocation.getCurrentPosition().then( (resp: Geoposition) => {
       this.lat = resp.coords.latitude;
       this.lon = resp.coords.longitude;
-
-      const options: NativeGeocoderOptions = {
-        useLocale: true,
-        maxResults: 1
-      };
-
-      this.nativeGeocoder.reverseGeocode(this.lat, this.lon, options).then((results => {
-        console.log(JSON.stringify(results[0]));
-        this.country = results[0].countryName;
-      }));
-
     }).catch((error) => {
-      console.log('Error getting location', error);
-      return null;
+      this.presentToast('Unable to find current location', 'danger');
+      this.loadingCards = false;
     });
+    await this.nativeGeocoder.reverseGeocode(this.lat, this.lon, { useLocale: true, maxResults: 1 }).then((res: NativeGeocoderResult[]) => {
+      this.country = res[0].countryName;
+    }).catch((error) => {
+      this.error = error;
+      this.presentToast('Problems with internet connection', 'danger');
+      this.loadingCards = false;
+    });
+    await this.storage.set('lat', this.lat);
+    await this.storage.set('lon', this.lon);
+    await this.storage.set('country', this.country);
+    await this.getVisitsNearby(this.lat, this.lon);
+    await this.getTopVisitCards(this.country, 3 );
+    this.loadingCards = false;
   }
 
   getTopVisitCards(country: string, quantity: number ) {
-
     const request: IGetTopVisitsRequest = new GetTopVisitsRequest(country, quantity);
-
     this.restService.getTopVisitCards(request, this.restService.HOME_ADRESS, '/getTopVisitCards').subscribe(
         async res => {
           this.bestRatedVisitsResposne = res;
-          for ( const card of this.bestRatedVisitsResposne.cards) {
-            const newCard: IVisitCard = new VisitCard
-            (
-                card.id,
-                card.title,
-                card.first_name,
-                card.last_name,
-                card.duration,
-                card.min_group_size,
-                card.max_group_size,
-                card.price_person,
-                card.rating,
-                card.img1
-            );
-            this.bestRatedVisits.push(newCard);
+          // Verify authorization
+          if (this.jwtHandlerService.verifyAuthentication(this.bestRatedVisitsResposne.accessToken)) {
+            for ( const card of this.bestRatedVisitsResposne.cards) {
+              const newCard: IVisitCard = new VisitCard
+              (
+                  card.id,
+                  card.title,
+                  card.first_name,
+                  card.last_name,
+                  card.duration,
+                  card.min_group_size,
+                  card.max_group_size,
+                  card.price_person,
+                  card.rating,
+                  card.img1
+              );
+              this.bestRatedVisits.push(newCard);
+            }
+            console.log(this.bestRatedVisits);
           }
-          console.log(this.bestRatedVisits);
         },
         error => {
           console.log('Error');
@@ -97,31 +99,30 @@ export class HomePage implements OnInit {
           this.presentToast('Problem loading best rated visits', 'danger');
         });
   }
-
   getVisitsNearby(lat: number, lon: number ) {
-
+    console.log('Entrei no getVisitsNearby');
     const request: IGetVisitsNearby = new GetVisitsNearby(lat, lon, 'K', 80);
-
     this.restService.getVisitsNearbyCards(request, this.restService.HOME_ADRESS, '/getTwoVisitsNearbyCards').subscribe(
         async res => {
           this.visitsNearbyResposne = res;
-          for ( const card of this.visitsNearbyResposne.cards) {
-            const newCard: IVisitCard = new VisitCard
-            (
-                card.id,
-                card.title,
-                card.first_name,
-                card.last_name,
-                card.duration,
-                card.min_group_size,
-                card.max_group_size,
-                card.price_person,
-                card.rating,
-                card.img1
-            );
-            this.visitsNearby.push(newCard);
+          if (this.jwtHandlerService.verifyAuthentication(this.visitsNearbyResposne.accessToken)) {
+            for (const card of this.visitsNearbyResposne.cards) {
+              const newCard: IVisitCard = new VisitCard
+              (
+                  card.id,
+                  card.title,
+                  card.first_name,
+                  card.last_name,
+                  card.duration,
+                  card.min_group_size,
+                  card.max_group_size,
+                  card.price_person,
+                  card.rating,
+                  card.img1
+              );
+              this.visitsNearby.push(newCard);
+            }
           }
-          console.log(this.visitsNearby);
         },
         error => {
           console.log('Error');
@@ -130,13 +131,16 @@ export class HomePage implements OnInit {
           this.presentToast('Problem loading visits nearby', 'danger');
         });
   }
-
   async presentToast( registerMessage, color ) {
     const toast = await this.toastController.create({
       message: registerMessage,
       duration: 2000,
       color
     });
-    toast.present();
+    await toast.present();
+  }
+
+  navigateToVisitPage(visitCard) {
+    this.router.navigate(['/visit-page'], visitCard);
   }
 }

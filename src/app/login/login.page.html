@@ -1,6 +1,6 @@
 <ion-content>
 
-  <ion-img class = logoBuddyAbroad src="assets/logo/Logo2.PNG"></ion-img>
+  <ion-img class = logoBuddyAbroad src="../assets/images/logo/Logo2.PNG"></ion-img>
 
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
     <ion-item class = "inputWithStyle">
@@ -29,14 +29,19 @@
     <ion-button type="submit" class="loginButton" [disabled]="!loginForm.valid">Login</ion-button>
   </form>
 
-  <ion-button fill="clear" class="clearBtn" [routerLink]="['forgot-password']">
-    <ion-label class="blackText">Forgot your password?</ion-label>
-    <ion-label class="yellowText"> Recover it! </ion-label>
+  <ion-button fill="clear" type="submit" class="clearBtn" [routerLink]="['/register']">
+    <ion-label class="blackText">Don't have an account yet?</ion-label>
+    <ion-label class="yellowText" style="white-space: pre"> Sign up! </ion-label>
   </ion-button>
 
-  <ion-button fill="clear" type="submit" class="clearBtn" [routerLink]="['tabs']">
-    <ion-label class="blackText">Don't have an account?</ion-label>
-    <ion-label class="yellowText"> Sign up! </ion-label>
+  <ion-button fill="clear" class="clearBtn" [routerLink]="['/forgot-password']">
+    <ion-label class="blackText">Forgot your password?</ion-label>
+    <ion-label class="yellowText" style="white-space: pre"> Recover it! </ion-label>
+  </ion-button>
+
+  <ion-button fill="clear" type="submit" class="clearBtn" [routerLink]="['/verify']">
+    <ion-label class="blackText">Resend verification email</ion-label>
+    <ion-label class="yellowText" style="white-space: pre"> here! </ion-label>
   </ion-button>
 
 </ion-content>

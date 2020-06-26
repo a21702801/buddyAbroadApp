@@ -1,4 +1,4 @@
-import {AbstractControl} from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 export function ConfirmPassword(control: AbstractControl): {[key: string]: any} | null {
     const password = control.get('password');

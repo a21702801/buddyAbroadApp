@@ -46,10 +46,7 @@
 
 .bottomButton {
   width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5%;
-  margin-top: 10%;
+  margin: 10% auto 5%;
   display: block;
   font-family: "Gotham Bold";
   color: white;
@@ -62,12 +59,9 @@
 .error-message {
   color: var(--ion-color-danger);
   font-size: 12px ;
-  margin-left: 4.5vh;
+  margin-left: 1.5rem;
 }
 
 ion-toast>.toast-container{
   background-color: #333333;
 }
-
-
-

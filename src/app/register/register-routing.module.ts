@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: RegisterPage
-  }
+  },
+  {
+    path: 'success-page',
+    loadChildren: () => import('./success-page/success-page.module').then( m => m.SuccessPagePageModule)
+  },
+
 ];
 
 @NgModule({

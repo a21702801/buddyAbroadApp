@@ -59,7 +59,7 @@ ion-range {
   width: 2.5rem;
   height: 2.5rem;
   background: #f4f5f8;
-  color: #f4f5f8;
+  color: transparent;
 }
 
 .select-position {
@@ -78,5 +78,14 @@ ion-range {
 
 ion-select {
   --placeholder-opacity:100%;
+}
+
+p {
+  font-family: "Gotham Book";
+  font-size: 1rem;
+  margin-left: 7%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  color: #333333;
 }
 

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ConfirmPassword } from './confirm-password/confirm-password';
+import { MinimumAge } from './minimum-age/minimumAge';
 import { RestService } from '../../services/rest-service/rest.service';
 import { ToastController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -52,7 +54,9 @@ export class RegisterPage implements OnInit {
         private formBuilder: FormBuilder,
         private httpClient: HttpClient,
         private restService: RestService,
-        public toastController: ToastController
+        public toastController: ToastController,
+        private route: ActivatedRoute,
+        private router: Router,
     ) {}
 
     ngOnInit() {
@@ -78,7 +82,8 @@ export class RegisterPage implements OnInit {
             date_of_birth: [
                 '',
                 [
-                    Validators.required
+                    Validators.required,
+                    MinimumAge(18)
                 ]
             ],
             email: [
@@ -104,7 +109,7 @@ export class RegisterPage implements OnInit {
                     Validators.required
                 ]
             ]
-        }, {validator: ConfirmPassword});
+        }, {validator: ConfirmPassword}) ;
     }
 
     get first_name() {
@@ -127,6 +132,10 @@ export class RegisterPage implements OnInit {
         return this.registerForm.get('confirm_password');
     }
 
+    get date_of_birth() {
+        return this.registerForm.get('date_of_birth');
+    }
+
     async submit() {
         console.log(this.registerForm.value);
         this.restService.postForm(this.registerForm.value, this.restService.AUTH_ADRESS, '/register').subscribe(
@@ -134,6 +143,7 @@ export class RegisterPage implements OnInit {
                     this.registerMessage = res;
                     console.log(res);
                     this.presentToast(this.registerMessage.info, 'success');
+                    this.router.navigate(['success-page'], { relativeTo: this.route});
                 },
                 error => {
                     this.registerMessage = error.error;

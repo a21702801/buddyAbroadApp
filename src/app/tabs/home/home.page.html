@@ -8,7 +8,7 @@
     </ion-buttons>
 
     <ion-title class="toolbar-title">
-      <!--<ion-icon size="default" color="dark" name="pin"></ion-icon>-->
+      <ion-icon size="default" color="dark" name="pin"></ion-icon>
       {{country}}
     </ion-title>
 
@@ -16,69 +16,127 @@
 </ion-header>
 
 <ion-content>
-  {{error}}
-
   <!--Title-->
   <ion-text>
     <h1 class="fieldTitle"> Best Rated </h1>
   </ion-text>
 
   <!--Top 3 visits-->
+  <!--Skeleton loading-->
+  <div *ngIf="loadingCards === true">
+    <ion-card>
+      <ion-skeleton-text animated style="width: 100%; height: 10rem;"></ion-skeleton-text>
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%; height: 130%"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
 
-  <span *ngIf="bestRatedVisits.length > 0">
+  <!-- Visit Cards -->
+  <span *ngIf="bestRatedVisits.length > 0" >
     <ion-card *ngFor="let card of bestRatedVisits">
       <ion-img src="{{card.img}}"></ion-img>
       <ion-card-header>
         <ion-card-subtitle class="card-sub-title">{{card.firstName}} {{card.lastName}}</ion-card-subtitle>
         <ion-card-title class="card-title">{{card.title}}</ion-card-title>
       </ion-card-header>
-
         <ion-grid>
-
           <ion-row>
-
             <ion-col>
               <ion-chip outline="true" color="success">
                 <ion-icon size="small" name="pricetag-outline"></ion-icon>
                 <ion-label>{{card.pricePerson}}</ion-label>
               </ion-chip>
             </ion-col>
-
             <ion-col>
               <ion-chip outline="true" color="primary">
                 <ion-icon size="small" name="star-outline"></ion-icon>
                 <ion-label>{{card.rating}}/5</ion-label>
               </ion-chip>
             </ion-col>
-
           </ion-row>
-
           <ion-row>
-
             <ion-col>
               <ion-chip outline="true" color="secondary">
                 <ion-icon size="small" name="time-outline"></ion-icon>
                 <ion-label>{{card.duration.slice(1,5)}}</ion-label>
               </ion-chip>
             </ion-col>
-
             <ion-col>
               <ion-chip outline="true" color="tertiary">
                 <ion-icon size="small" name="people-outline"></ion-icon>
                 <ion-label>{{card.minGroupSize}}-{{card.maxGroupSize}}</ion-label>
               </ion-chip>
             </ion-col>
-
           </ion-row>
-
         </ion-grid>
     </ion-card>
   </span>
 
+  <!-- No cards loaded -->
+  <span *ngIf="bestRatedVisits.length === 0 && loadingCards === false" >
+    <ion-text>
+      <p> We couldn't find any visits for your country </p>
+    </ion-text>
+    <ion-img src="../../assets/images/swing.png"></ion-img>
+  </span>
+
+
+  <!-- Visits Nearby -->
   <ion-text>
     <h1 class="fieldTitle"> Visits Nearby </h1>
   </ion-text>
 
+  <!--Skeleton Loading -->
+  <div *ngIf="loadingCards === true">
+    <ion-card>
+      <ion-skeleton-text animated style="width: 100%; height: 10rem;"></ion-skeleton-text>
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%; height: 130%"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+          <ion-col>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+
+
+  <!-- Visit Cards -->
   <span *ngIf="visitsNearby.length > 0">
     <ion-card *ngFor="let card of visitsNearby">
       <ion-img src="{{card.img}}"></ion-img>
@@ -86,53 +144,46 @@
         <ion-card-subtitle class="card-sub-title">{{card.firstName}} {{card.lastName}}</ion-card-subtitle>
         <ion-card-title class="card-title">{{card.title}}</ion-card-title>
       </ion-card-header>
-
         <ion-grid>
-
           <ion-row>
-
             <ion-col>
               <ion-chip outline="true" color="success">
                 <ion-icon size="small" name="pricetag-outline"></ion-icon>
                 <ion-label>{{card.pricePerson}}</ion-label>
               </ion-chip>
             </ion-col>
-
             <ion-col>
               <ion-chip outline="true" color="primary">
                 <ion-icon size="small" name="star-outline"></ion-icon>
                 <ion-label>{{card.rating}}/5</ion-label>
               </ion-chip>
             </ion-col>
-
           </ion-row>
-
           <ion-row>
-
             <ion-col>
               <ion-chip outline="true" color="secondary">
                 <ion-icon size="small" name="time-outline"></ion-icon>
                 <ion-label>{{card.duration.slice(1,5)}}</ion-label>
               </ion-chip>
             </ion-col>
-
             <ion-col>
               <ion-chip outline="true" color="tertiary">
                 <ion-icon size="small" name="people-outline"></ion-icon>
                 <ion-label>{{card.minGroupSize}}-{{card.maxGroupSize}}</ion-label>
               </ion-chip>
             </ion-col>
-
           </ion-row>
-
         </ion-grid>
-
     </ion-card>
-
   </span>
 
-
-
+  <!-- No cards loaded -->
+  <span *ngIf="bestRatedVisits.length === 0 && loadingCards === false" >
+    <ion-text>
+      <p> We couldn't find any visits close to you </p>
+    </ion-text>
+    <ion-img src="../../assets/images/swing.png"></ion-img>
+  </span>
 
 </ion-content>
 
